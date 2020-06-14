@@ -74,7 +74,7 @@ app.use("/api/ads", require("./routes/ad"));
 //app.use('/api/profile', require('./routes/profile'));
 
 app.use(express.static(__dirname + '/client/build'));
-app.get('/', function (req, res) {
+app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, './client/build', 'index.html'));
 });
 
