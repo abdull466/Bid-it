@@ -19,6 +19,7 @@ router.post('api/upload', [], (req, res) => {
         return res.status(500).send(err);
       }
     });
+
     res.json({ fileName: file[key].name, filePath: `/uploads/${file[key].name}` });
   });
 });
