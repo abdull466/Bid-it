@@ -46,7 +46,7 @@ const Profile = (props) => {
     city: '',
     image: '',
   });
-
+  var link = "aaa"
   const [userid, setId] = useState(0);
   const [picture, setPicture] = useState('');
 
@@ -98,10 +98,25 @@ const Profile = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    var fileName = file.name;
+    var storageRef = firebase.storage().ref(fileName);
+    link = "ddddd";
+    storageRef.put(file).then(function (snapshot) {
+      console.log('Image Successfully Uploaded...!');
+      const ref = firebase.storage().ref(file.name);
+      var res = ref.getDownloadURL().then(function (url) {
+        console.log("this:" + url)
+        data.image = link;
+        return url;
+      }).catch(err => {
+        alert("Image Not Sent");
+        console.error("error: " + err)
+      });
+    });
 
     const nimage = uimage === '' ? image : timestamp + image;
 
-    data.image = nimage;
+    // data.image = link;
 
     updateProfile(data);
     setUimage('');
@@ -109,7 +124,7 @@ const Profile = (props) => {
 
     formData.append('file', file);
 
-    formData.append('imagename', nimage);
+    formData.append('imagename', link);
     try {
       const res = await axios.post('/upload', formData, {
         headers: {
