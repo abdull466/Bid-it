@@ -163,7 +163,7 @@ const PersonalFeedback = ({ completed, getCompletedAdsofLoginUser, getAllCatagor
 
                                 <img
                                   className="d-block w-100"
-                                  src={`http://localhost:3000/ads/${e}`}
+                                  src={e}
                                   alt="box-icon"
                                   style={{ width: "200px", height: "200px" }}
                                   draggable="false"

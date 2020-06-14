@@ -101,29 +101,29 @@ const TotalAdsPosted = (props) => {
 
 
                 <div
-                class='col-lg-4 col-md-6 mx-auto rt-mb-30'
+                  class='col-lg-4 col-md-6 mx-auto rt-mb-30'
                   style={{ display: 'inline-block', marginLeft: '30px' }}
                 >
                   <div class='icon-thumb'>
-                  <Carousel>
-                          {ad.image.map((e) => {
+                    <Carousel>
+                      {ad.image.map((e) => {
 
-                            return (
-                              <Carousel.Item>
+                        return (
+                          <Carousel.Item>
 
-                                <img
-                                  className="d-block w-100"
-                                  src={`http://localhost:3000/ads/${e}`}
-                                  alt="box-icon"
-                                  style={{ width: "200px", height: "200px" }}
-                                  draggable="false"
-                                />
+                            <img
+                              className="d-block w-100"
+                              src={e}
+                              alt="box-icon"
+                              style={{ width: "200px", height: "200px" }}
+                              draggable="false"
+                            />
 
-                              </Carousel.Item>
-                            )
-                          })
-                          }
-                        </Carousel>
+                          </Carousel.Item>
+                        )
+                      })
+                      }
+                    </Carousel>
                   </div>
                   <div class='card-body'>
                     <h4 class='card-title' style={{ textAlign: 'center' }}>

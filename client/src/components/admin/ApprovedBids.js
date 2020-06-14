@@ -111,7 +111,7 @@ const TotalApprovedBids = (props) => {
 
                             <img
                               className="d-block"
-                              src={`http://localhost:3000/ads/${e}`}
+                              src={e}
                               alt="box-icon"
                               style={{ width: "400px" }}
                               draggable="false"

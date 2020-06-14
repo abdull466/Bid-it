@@ -341,7 +341,7 @@ const ApproveBids = (props) => {
     //     }, 2500);
     //   }, 2000);
     // }
-  //  alert(paymentId)
+    //  alert(paymentId)
     donePayment(paymentId)
     window.location.reload()
     setTimeout(function () {
@@ -786,7 +786,7 @@ const ApproveBids = (props) => {
 
                                 <img
                                   className="d-block w-100"
-                                  src={`http://localhost:3000/ads/${e}`}
+                                  src={e}
                                   alt="box-icon"
                                   style={{ width: "200px", height: "200px" }}
                                   draggable="false"
