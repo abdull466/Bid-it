@@ -106,7 +106,8 @@ const Profile = (props) => {
       const ref = firebase.storage().ref(file.name);
       var res = ref.getDownloadURL().then(function (url) {
         console.log("this:" + url)
-        data.image = link;
+        data.image = url;
+        alert(url)
         return url;
       }).catch(err => {
         alert("Image Not Sent");
