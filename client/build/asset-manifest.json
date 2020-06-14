@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3441f0d2.chunk.css",
+    "main.js": "/static/js/main.23730bc5.chunk.js",
+    "main.js.map": "/static/js/main.23730bc5.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.8c40394c.js",
+    "runtime-main.js.map": "/static/js/runtime-main.8c40394c.js.map",
+    "static/css/2.d34346ea.chunk.css": "/static/css/2.d34346ea.chunk.css",
+    "static/js/2.4b7ab3d5.chunk.js": "/static/js/2.4b7ab3d5.chunk.js",
+    "static/js/2.4b7ab3d5.chunk.js.map": "/static/js/2.4b7ab3d5.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.ad0ec6a0bf3806a26195a62a9fc33ded.js": "/precache-manifest.ad0ec6a0bf3806a26195a62a9fc33ded.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.d34346ea.chunk.css.map": "/static/css/2.d34346ea.chunk.css.map",
+    "static/css/main.3441f0d2.chunk.css.map": "/static/css/main.3441f0d2.chunk.css.map",
+    "static/js/2.4b7ab3d5.chunk.js.LICENSE.txt": "/static/js/2.4b7ab3d5.chunk.js.LICENSE.txt",
+    "static/media/banner_01.png": "/static/media/banner_01.3f599422.png",
+    "static/media/breadcump-img.png": "/static/media/breadcump-img.46b57b89.png",
+    "static/media/logo.png": "/static/media/logo.e2ac6fe6.png",
+    "static/media/logo2.png": "/static/media/logo2.9dd4a6fb.png",
+    "static/media/pc.png": "/static/media/pc.209a5afe.png",
+    "static/media/section-bg-6.png": "/static/media/section-bg-6.8d2d36e7.png",
+    "static/media/shape-right-2.png": "/static/media/shape-right-2.7dcb1c3b.png",
+    "static/media/visamaster.JPG": "/static/media/visamaster.c856e2f3.JPG"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8c40394c.js",
+    "static/css/2.d34346ea.chunk.css",
+    "static/js/2.4b7ab3d5.chunk.js",
+    "static/css/main.3441f0d2.chunk.css",
+    "static/js/main.23730bc5.chunk.js"
+  ]
+}
