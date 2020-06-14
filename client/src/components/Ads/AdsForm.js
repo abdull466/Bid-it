@@ -4,6 +4,7 @@ import { addAd, editAd } from "../../actions/adactions";
 import axios from "axios";
 import { setAlert } from "../../actions/alert";
 import Alert from '../Layout/Alert'
+const firebase = require('firebase')
 const AdsForm = ({ addAd, current, editAd, catagories }) => {
 
   const timestamp = new Date().getTime().toString();
@@ -52,41 +53,37 @@ const AdsForm = ({ addAd, current, editAd, catagories }) => {
     var obj = document.getElementById('customFile').files
 
     Object.keys(obj).forEach(function (key) {
-      lst.push(timestamp + obj[key].name)
-    });
+
+
+      var fileName = timestamp + obj[key].name;
+      var storageRef = firebase.storage().ref(fileName);
+      // link = "ddddd";
+      storageRef.put(obj[key]).then(function (snapshot) {
+        //  alert("img upload")
+        console.log('Image Successfully Uploaded...!');
+        const ref = firebase.storage().ref(fileName);
+        var res = ref.getDownloadURL().then(async function (url) {
+          console.log("this:" + url)
+          lst.push(url)
+          //return url;
+        }).catch(err => {
+          alert("Image Not Sent");
+          console.error("error: " + err)
+        });
+      });
+    })
+
 
     //  console.log(lst)
 
     if (current === null) {
+      setTimeout(function () {
+        ad.image = lst
+        current === null ? addAd(ad) : editAd(ad, current._id);
+      }, 5000);
+
       //     nimage = timestamp + image
-      ad.image = lst
-    }
-    current === null ? addAd(ad) : editAd(ad, current._id);
 
-    if (current === null) {
-
-
-
-      var l = 0;
-      for (l = 0; l < obj.length; l++) {
-        const formData = new FormData();
-        formData.append("file", obj[l]);
-        formData.append("imagename", timestamp + obj[l].name)
-
-
-        axios.post("/upload/ad/image", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        // } catch (err) {
-        //   if (err.response.status === 500) {
-        //     setAlert("There was a problem with the server", "danger");
-        //   } else {
-        //     setAlert(err.response.data.msg, "success");
-        //   }
-        // }
-      }
     }
 
     setAd({

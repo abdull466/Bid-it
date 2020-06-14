@@ -60,7 +60,7 @@ const Ad = ({ ad, deleteAd, getAd, approveBid, revertBid, closeAd }) => {
 
                 <img
                   className="d-block w-100"
-                  src={`/ads/${e}`}
+                  src={e}
                   alt="box-icon"
                   style={{ width: "200px", height: "200px" }}
                   draggable="false"

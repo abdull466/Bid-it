@@ -100,35 +100,56 @@ const Register = (props) => {
     ) {
       setAlert('All fields are mandatory', 'danger');
     } else {
-      const nimage = timestamp + image;
-      registerUser({
-        fname,
-        lname,
-        email,
-        mobile,
-        image: nimage,
-        country,
-        city,
-        password,
+
+      var fileName = timestamp + file.name;
+      var storageRef = firebase.storage().ref(fileName);
+     // link = "ddddd";
+      storageRef.put(file).then(function (snapshot) {
+        //  alert("img upload")
+        console.log('Image Successfully Uploaded...!');
+        const ref = firebase.storage().ref(fileName);
+        var res = ref.getDownloadURL().then(async function (url) {
+          console.log("this:" + url)
+          registerUser({
+            fname,
+            lname,
+            email,
+            mobile,
+            image: url,
+            country,
+            city,
+            password,
+          });
+          // updateProfile(data);
+          //  alert("Profile Updated Successfully...")
+          //  setUimage('');
+          // alert(url)
+          return url;
+        }).catch(err => {
+          alert("Image Not Sent");
+          console.error("error: " + err)
+        });
       });
 
-      const formData = new FormData();
 
-      formData.append('file', file);
-      formData.append('imagename', nimage);
-      try {
-        const res = await axios.post('/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
 
-        const { fileName, filePath } = res.data;
+      // const formData = new FormData();
 
-        setUploadedFile({ fileName, filePath });
-      } catch (err) {
-        console.log(err);
-      }
+      // formData.append('file', file);
+      // formData.append('imagename', nimage);
+      // try {
+      //   const res = await axios.post('/upload', formData, {
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   });
+
+      //   const { fileName, filePath } = res.data;
+
+      //   setUploadedFile({ fileName, filePath });
+      // } catch (err) {
+      //   console.log(err);
+      // }
 
       firebase
         .auth()

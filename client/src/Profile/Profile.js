@@ -97,17 +97,47 @@ const Profile = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    // alert('Profile')
 
-    var fileName = file.name;
+    var fileName = timestamp + file.name;
     var storageRef = firebase.storage().ref(fileName);
     link = "ddddd";
     storageRef.put(file).then(function (snapshot) {
+      //  alert("img upload")
       console.log('Image Successfully Uploaded...!');
-      const ref = firebase.storage().ref(file.name);
-      var res = ref.getDownloadURL().then(function (url) {
+      const ref = firebase.storage().ref(fileName);
+      var res = ref.getDownloadURL().then(async function (url) {
         console.log("this:" + url)
+
         data.image = url;
-        alert(url)
+
+        updateProfile(data);
+        alert("Profile Updated Successfully...")
+        setUimage('');
+        // const formData = new FormData();
+
+        // formData.append('file', file);
+
+        // formData.append('imagename', url);
+        // try {
+        //   const res = await axios.post('/upload', formData, {
+        //     headers: {
+        //       'Content-Type': 'multipart/form-data',
+        //     },
+        //   });
+
+        //   const { fileName, filePath } = res.data;
+        //   setData({
+        //     image: image,
+        //   });
+        //   setPicture(image);
+
+        //   // setUploadedFile({ fileName, filePath });
+        // } catch (err) {
+        //   console.log(err);
+        // }
+
+        // alert(url)
         return url;
       }).catch(err => {
         alert("Image Not Sent");
@@ -115,35 +145,7 @@ const Profile = (props) => {
       });
     });
 
-    const nimage = uimage === '' ? image : timestamp + image;
-
-    // data.image = link;
-
-    updateProfile(data);
-    setUimage('');
-    const formData = new FormData();
-
-    formData.append('file', file);
-
-    formData.append('imagename', link);
-    try {
-      const res = await axios.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      const { fileName, filePath } = res.data;
-      setData({
-        image: image,
-      });
-      setPicture(image);
-
-      // setUploadedFile({ fileName, filePath });
-    } catch (err) {
-      console.log(err);
-    }
-
+    //  const nimage = uimage === '' ? image : timestamp + image;
     //update image
 
   };
@@ -183,7 +185,7 @@ const Profile = (props) => {
             <div class='card' style={{ width: '400px', height: '800px' }}>
               <img
                 class='card-img-top'
-                src={`/uploads/${profile.image}`}
+                src={profile.image}
                 alt='Card image'
               />
               <div class='card-body'>
@@ -571,7 +573,7 @@ const Profile = (props) => {
 
               <img
                 class='card-img-top'
-                src={`/uploads/${profile.image}`}
+                src={profile.image}
                 alt='Card image'
               />
               <div class='card-body'>
