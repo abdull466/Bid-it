@@ -16,7 +16,7 @@ import Alert from '../components/Layout/Alert';
 import axios from 'axios';
 
 import cities from '../utils/cities'
-
+const firebase = require('firebase')
 const Profile = (props) => {
 
   const {
