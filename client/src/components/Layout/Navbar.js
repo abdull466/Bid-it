@@ -71,13 +71,9 @@ const Navbar = ({
               <Link to='/myWallet'>Wallet</Link>
             </li>
             <li className='menu-item'>
-              <a
-                href='https://webbiding-chatapp.firebaseapp.com/dashboard'
-                target='_blank'
-                dashboard='https://webbiding-chatapp.firebaseapp.com/dashboard'
-              >
-                Chat
-            </a>
+              <li className='menu-item'>
+                <Link to='/myChat'>Chat</Link>
+              </li>
             </li>
             <li className='menu-item'>
               <Link to='/about'>About</Link>
