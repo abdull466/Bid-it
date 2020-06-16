@@ -10,6 +10,10 @@ import sectionbg6 from '../../images/all-img/section-bg-6.png';
 
 import Fotter from '../Layout/Footer';
 const firebase = require('firebase');
+
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase-adminsdk.json");
+
 const Login = (props) => {
   const { login, isAuthenticated, setAlert, role, roleUser } = props;
   const [user, setUser] = useState({
@@ -25,45 +29,61 @@ const Login = (props) => {
     if (password === '' || email === '') {
       setAlert('All fields are required', 'danger');
     } else {
-      login(user);
+
+      localStorage.setItem('currUser', email)
+
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://webbiding-chatapp.firebaseio.com"
+      });
 
       firebase
         .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        .then(function () {
-          firebase.get('/dashboard');
-          return firebase.auth().signInWithEmailAndPassword(email, password);
-        })
-        .catch(function (error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        });
-      firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-          alert(user.email);
-        } else {
-          // No user is signed in.
-        }
-      });
-      //   firebase
-      //     .auth()
-      //     .signInWithEmailAndPassword(email, password)
-      //     .then(
-      //       () => {
-      //         alert('Firebase Logged In');
-      //         // this.props.history.push('/dashboard');
-      //       },
-      //       (err) => {
-      //         alert('ERROR');
-      //         // this.setState({ serverError: true });
-      //         console.log('Error logging in: ', err);
-      //       }
-      //     );
-      // }
-    }
-  };
+        .signInWithEmailAndPassword(email, password)
+        .then(
+          () => {
+            var user_id_token = ""
+            firebase.auth().onAuthStateChanged((user) => {
+              if (user) {
+                alert("AUTH USER" + user.email)
+                console.log('user is logged' + user.email);
 
+                firebase.auth().currentUser.getIdToken().then(function (idToken) {
+                  user_id_token = idToken
+                  //   alert("USER_ID_TOKEN : " + user_id_token)
+
+                }).catch(function (error) {
+                  // Handle error
+                });
+
+                admin.auth().createCustomToken(email)
+                  .then(function (customToken) {
+                    //   alert(customToken)
+                    login(user);
+                    console.log(customToken)
+                    localStorage.setItem('chatID', customToken)
+                  })
+                  .catch(function (error) {
+                    alert("Error generating token");
+                    console.log('Error creating custom token:', error);
+                  });
+
+              }
+              else {
+                alert("AUTH STATE ERROR")
+              }
+            });
+            //   alert('Firebase Logged In');
+            // this.props.history.push('/dashboard');
+          },
+          (err) => {
+            alert('ERROR');
+            // this.setState({ serverError: true });
+            console.log('Error logging in: ', err);
+          }
+        );
+    };
+  }
   const onChange = (e) => {
     setUser({
       ...user,
@@ -80,6 +100,7 @@ const Login = (props) => {
       return <Redirect to='/dashboard' />;
     }
   }
+
 
   return (
     <React.Fragment>

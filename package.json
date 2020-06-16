@@ -18,6 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "build": "^0.1.4",
     "config": "^3.3.1",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.7-alpha.3",
@@ -27,6 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.10",
     "nodemailer": "^6.4.6",
+    "react-script": "^2.0.5",
     "sweetalert-react": "^0.4.11",
     "uuid": "^7.0.3"
   },

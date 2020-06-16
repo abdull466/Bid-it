@@ -22,6 +22,8 @@ import PersonalFeedback from './components/pages/PersonalFeedback';
 import Profile from './Profile/Profile';
 import Dashboard from './components/admin/Dashboard';
 
+import CHAT from './components/pages/myChat'
+
 import ContactUs from './components/pages/ContactUs';
 import Users from './components/admin/Users';
 import Catagories from './components/admin/Catagories';
@@ -71,6 +73,8 @@ function App(props) {
             <Route exact path='/profile' component={Profile} />
             <Route exact path='/contactus' component={ContactUs} />
             <Route exact path='/myWallet' component={Wallet} />
+
+            <Route exact path='/myChat' component={CHAT} />
 
             <Route exact path='/dashboard' component={Dashboard} />
 

@@ -157,6 +157,8 @@ export const login = (user) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
+  localStorage.removeItem('currUser')
+  localStorage.removeItem('chatID')
   window.location.href = "/";
 };
 
