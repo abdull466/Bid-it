@@ -32,7 +32,10 @@ const Login = (props) => {
 
       localStorage.setItem('currUser', email)
 
-
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://webbiding-chatapp.firebaseio.com"
+      });
 
       firebase
         .auth()
