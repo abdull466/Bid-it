@@ -18,6 +18,14 @@ import {
 import setAuthToken from "../utils/setAuthToken";
 import { setAlert } from "./alert";
 import axios from "axios";
+const firebase = require('firebase');
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase-adminsdk.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://webbiding-chatapp.firebaseio.com"
+});
 
 export const getAllusers = () => async (dispatch) => {
   try {
@@ -143,7 +151,55 @@ export const login = (user) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(loadUser());
+    localStorage.setItem('currUser', email)
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(
+        () => {
+          var user_id_token = ""
+          firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              alert("AUTH USER" + user.email)
+              console.log('user is logged' + user.email);
+
+              firebase.auth().currentUser.getIdToken().then(function (idToken) {
+                user_id_token = idToken
+                //   alert("USER_ID_TOKEN : " + user_id_token)
+
+              }).catch(function (error) {
+                // Handle error
+              });
+
+              admin.auth().createCustomToken(email)
+                .then(function (customToken) {
+                  //   alert(customToken)
+                  console.log(customToken)
+                  localStorage.setItem('chatID', customToken)
+                  dispatch(loadUser());
+                })
+                .catch(function (error) {
+                  alert("Error generating token");
+                  console.log('Error creating custom token:', error);
+                });
+
+            }
+            else {
+              alert("AUTH STATE ERROR")
+            }
+          });
+          //   alert('Firebase Logged In');
+          // this.props.history.push('/dashboard');
+        },
+        (err) => {
+          alert('ERROR');
+          // this.setState({ serverError: true });
+          console.log('Error logging in: ', err);
+        }
+      );
+
+
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
