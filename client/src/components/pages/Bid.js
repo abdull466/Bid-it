@@ -13,14 +13,15 @@ let adData = "";
 var imags = []
 var bdl = ""
 var id = window.location.href;
-id = id.slice(27)
+id = id.slice(38)
+//alert(id)
 axios
   .post("/api/ads/myAd/", { params: id })
   .then(response => {
     adData = response.data.allResult;
     imags = response.data.allResult.image
     bdl = response.data.bidsL;
-    console.log("error", adData);
+    console.log("Data", adData);
   })
   .catch(error => {
     console.log("error", error);
