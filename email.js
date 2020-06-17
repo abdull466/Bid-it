@@ -9,7 +9,7 @@ const Email = (email, code) => {
 
     auth: {
       user: 'bidit43@gmail.com',
-      pass: 'Alee1234',
+      pass: 'Bidit@123',
     },
 
     tls: {
