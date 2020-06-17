@@ -183,7 +183,7 @@ const PersonalFeedback = ({ completed, getCompletedAdsofLoginUser, getAllCatagor
                               <h5 class='f-size-36 f-size-lg-28 rt-normal rt-mb-25'>
                                 {ad.title}
                               </h5>
-                              <h4 style={{ color: 'red' }}> ADD BLOCKED BY ADMIN </h4>
+                              <h4 style={{ color: 'red' }}> AD BLOCKED BY ADMIN </h4>
                             </div>
                           )
                           :
