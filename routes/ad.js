@@ -182,7 +182,7 @@ router.post("/myAd/", function (req, res) {
 
   const id = req.body.params
   console.log(id)
-  Ad.findOne({ _id: id }, function (err, result) {
+  Ad.findById({ _id: req.body.params }, function (err, result) {
     try {
       if (!result) {
         return res.status(404).json({ msg: "Ad not found" });

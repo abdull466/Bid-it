@@ -52,7 +52,7 @@ const CHAT = (props) => {
                     <div >
                         <br></br><br></br>
                         < iframe
-                            width="100%"
+                            width="600px"
                             height="500px"
                             src={url}
                             frameBorder="0"

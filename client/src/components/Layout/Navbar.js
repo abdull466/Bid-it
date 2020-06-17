@@ -70,11 +70,11 @@ const Navbar = ({
             <li className='menu-item'>
               <Link to='/myWallet'>Wallet</Link>
             </li>
+
             <li className='menu-item'>
-              <li className='menu-item'>
-                <Link to='/myChat'>Chat</Link>
-              </li>
+              <Link to='/myChat'>Chat</Link>
             </li>
+
             <li className='menu-item'>
               <Link to='/about'>About</Link>
             </li>
