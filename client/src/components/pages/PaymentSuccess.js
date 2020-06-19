@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios'
 import setAuthToken from "../../utils/setAuthToken";
 import { match } from 'assert';
+import swal from 'sweetalert'
 
 const PaymentSuccess = (props) => {
 
@@ -13,7 +14,7 @@ const PaymentSuccess = (props) => {
     }
     var rupee = new URLSearchParams(props.location.search).get("PKR");
     var type = new URLSearchParams(props.location.search).get("FOR");
-  
+
     const data = {
         for: type,
         agent: "Credit / Debit Card",
@@ -22,6 +23,7 @@ const PaymentSuccess = (props) => {
     axios
         .post("/api/users/walletOperations", { data })
         .then(response => {
+            swal(" Payment Success!", "Thanks for using Stripe...", "success");
             window.location.href = '/myWallet'
         })
         .catch(error => {
@@ -29,10 +31,10 @@ const PaymentSuccess = (props) => {
         });
 
     return (
-            <div>
-                PAYMENT_SUCCESSFULL
+        <div>
+            PAYMENT_SUCCESSFULL
         </div>
-        )
+    )
 }
-    
+
 export default PaymentSuccess
