@@ -2,7 +2,7 @@ import React, { useEffect, Profiler, useState } from 'react';
 import ReactStars from 'react-stars'
 import { connect } from 'react-redux';
 import breadcump from '../images/banner/breadcump-img.png';
-
+import swal from 'sweetalert'
 import { getProfile } from '../actions/auth';
 import {
   getAdsofLoginUser,
@@ -99,51 +99,58 @@ const Profile = (props) => {
     e.preventDefault();
     // alert('Profile')
 
-    var fileName = timestamp + file.name;
-    var storageRef = firebase.storage().ref(fileName);
-    link = "ddddd";
-    storageRef.put(file).then(function (snapshot) {
-      //  alert("img upload")
-      console.log('Image Successfully Uploaded...!');
-      const ref = firebase.storage().ref(fileName);
-      var res = ref.getDownloadURL().then(async function (url) {
-        console.log("this:" + url)
+    var obj = document.getElementById('customFile').files
+    if (obj.length > 0) {
+      var fileName = timestamp + file.name;
+      var storageRef = firebase.storage().ref(fileName);
+      link = "ddddd";
+      storageRef.put(file).then(function (snapshot) {
+        //  alert("img upload")
+        console.log('Image Successfully Uploaded...!');
+        const ref = firebase.storage().ref(fileName);
+        var res = ref.getDownloadURL().then(async function (url) {
+          console.log("this:" + url)
 
-        data.image = url;
+          data.image = url;
 
-        updateProfile(data);
-        alert("Profile Updated Successfully...")
-        setUimage('');
-        // const formData = new FormData();
+          updateProfile(data);
+          swal(" Update Success!", "Your Profile has been updated Successfully", "success");
+          setUimage('');
+          // const formData = new FormData();
 
-        // formData.append('file', file);
+          // formData.append('file', file);
 
-        // formData.append('imagename', url);
-        // try {
-        //   const res = await axios.post('/upload', formData, {
-        //     headers: {
-        //       'Content-Type': 'multipart/form-data',
-        //     },
-        //   });
+          // formData.append('imagename', url);
+          // try {
+          //   const res = await axios.post('/upload', formData, {
+          //     headers: {
+          //       'Content-Type': 'multipart/form-data',
+          //     },
+          //   });
 
-        //   const { fileName, filePath } = res.data;
-        //   setData({
-        //     image: image,
-        //   });
-        //   setPicture(image);
+          //   const { fileName, filePath } = res.data;
+          //   setData({
+          //     image: image,
+          //   });
+          //   setPicture(image);
 
-        //   // setUploadedFile({ fileName, filePath });
-        // } catch (err) {
-        //   console.log(err);
-        // }
+          //   // setUploadedFile({ fileName, filePath });
+          // } catch (err) {
+          //   console.log(err);
+          // }
 
-        // alert(url)
-        return url;
-      }).catch(err => {
-        alert("Image Not Sent");
-        console.error("error: " + err)
+          // alert(url)
+          return url;
+        }).catch(err => {
+          alert("Image Not Sent");
+          console.error("error: " + err)
+        });
       });
-    });
+    }
+    else {
+      updateProfile(data);
+      swal(" Update Success!", "Your Profile has been updated Successfully", "success");
+    }
 
     //  const nimage = uimage === '' ? image : timestamp + image;
     //update image
