@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import cover from '../../images/banner/breadcump-img.png';
-import WalletLayout from '../Layout/wallet'
+import WalletLayout from '../Layout/wallet.component'
+import setAuthToken from "../../utils/setAuthToken";
 
 const Wallet = (props) => {
+
+  
   return (
     <React.Fragment>
       <div className='rt-breadcump rt-breadcump-height breaducump-style-2'>

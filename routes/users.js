@@ -4,11 +4,19 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const stripe = require('stripe')('sk_test_MuQleEH8TU53i1Dqzw590peM002c4Hrzs7', { apiVersion: '' });
+
 const auth = require('../middleware/auth');
 
 const Email = require('../email');
 
 const User = require('../models/User');
+
+const account = stripe.accounts.create({
+  country: 'CA',
+  type: 'custom',
+  requested_capabilities: ['card_payments', 'transfers'],
+});
 
 // @route  POST api/users
 // @desc   Register user route
@@ -96,16 +104,83 @@ router.get('/profile/', auth, async (req, res) => {
   }
 });
 
-router.get('/profile/:id', auth, async (req, res) => {
+router.get('/myWallet/', auth, async (req, res) => {
   try {
-    const profile = await User.findById(req.params.id);
-
+    const profile = await User.findById(req.user.id);
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' });
     }
-
-    res.json(profile);
+    console.error("My balance : " + profile.balance);
+    res.json({ balance: profile.balance, trans: profile.transactions, dp: profile.image, name: (profile.fname + " " + profile.lname) });
   } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.post('/stripeSession', auth, async (req, res) => {
+
+  console.log(JSON.stringify(req.body))
+  var pkr = req.body.pkr * 100;
+  stripe.prices.create(
+    {
+      unit_amount: pkr,
+      currency: 'pkr',
+      product: 'prod_HUMODiOT3EcHqA',
+    },
+    async function (err, price) {
+
+      const sess = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [{
+          price: price.id,
+          quantity: 1,
+        }],
+        mode: 'payment',
+        success_url: 'https://www.web-bid-it.herokuapp.com/myWallet/card_payment/success/?PKR=' + pkr / 100 + "&FOR=" + req.body.for,
+        cancel_url: 'https://www.web-bid-it.herokuapp.com/myWallet/card_payment/failed'
+      });
+
+      res.json(sess)
+    }
+  );
+});
+
+router.post('/walletOperations', auth, async (req, res) => {
+
+  var currentdate = new Date();
+  var datetime = " " + currentdate.toLocaleString()
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(400).json({ msg: 'There is no profile for this user' });
+    }
+
+    console.log("Started")
+
+    var total = 0;
+    if (req.body.data.for === "Recharge") {
+      total = parseFloat(user.balance) + parseFloat(req.body.data.amount)
+    }
+    else {
+      total = parseFloat(user.balance) - parseFloat(req.body.data.amount)
+    }
+    console.log("Now Total : " + total)
+    user.balance = total
+
+    const data = {
+      for: req.body.data.for,
+      agent: req.body.data.agent,
+      amount: req.body.data.amount,
+      date: datetime
+    }
+
+    user.transactions.unshift(data)
+
+    const reslt = await user.save();
+    res.json(reslt)
+  }
+  catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }

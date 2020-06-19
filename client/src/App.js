@@ -30,6 +30,10 @@ import Catagories from './components/admin/Catagories';
 import TotalAdsPosted from './components/admin/TotalAdsPosted';
 import TotalApprovedBids from './components/admin/ApprovedBids';
 import ProfileUser from './components/admin/ProfileUser';
+
+import PaymentSeccess from './components/pages/PaymentSuccess'
+import PaymentFailed from './components/pages/PaymentFailed'
+
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
@@ -73,6 +77,9 @@ function App(props) {
             <Route exact path='/profile' component={Profile} />
             <Route exact path='/contactus' component={ContactUs} />
             <Route exact path='/myWallet' component={Wallet} />
+
+            <Route exact path='/myWallet/card_payment/success/' component={PaymentSeccess} />
+            <Route exact path='/myWallet/card_payment/failed' component={PaymentFailed} />
 
             <Route exact path='/myChat' component={CHAT} />
 

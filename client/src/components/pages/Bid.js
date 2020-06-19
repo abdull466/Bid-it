@@ -13,19 +13,8 @@ let adData = "";
 var imags = []
 var bdl = ""
 var id = window.location.href;
-id = id.slice(38)
+id = id.slice(27)
 //alert(id)
-axios
-  .post("/api/ads/myAd/", { params: id })
-  .then(response => {
-    adData = response.data.allResult;
-    imags = response.data.allResult.image
-    bdl = response.data.bidsL;
-    console.log("Data", adData);
-  })
-  .catch(error => {
-    console.log("error", error);
-  });
 
 const Bid = (props) => {
 
@@ -48,6 +37,19 @@ const Bid = (props) => {
   if (!localStorage.token) {
     window.location.href = "/";
   }
+
+  axios
+    .post("/api/ads/myAd/", { params: id })
+    .then(response => {
+      adData = response.data.allResult;
+      imags = response.data.allResult.image
+      bdl = response.data.bidsL;
+      console.log("Data", adData);
+    })
+    .catch(error => {
+      console.log("error", error);
+    });
+
   const submitBid = (e) => {
     e.preventDefault();
 

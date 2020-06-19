@@ -1,5 +1,4 @@
 var nodemailer = require('nodemailer');
-
 const Email = (email, code) => {
   var transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -21,7 +20,7 @@ const Email = (email, code) => {
     from: 'bidit43@gmail.com',
     to: email,
     subject: 'Verification Code',
-    text: code,
+    html: '<h1><i>Your Bidit Sign Up Verification Code is : </i>' + '<p style="color:green">' + code + '</p></h1>'
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

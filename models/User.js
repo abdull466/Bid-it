@@ -6,6 +6,16 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
+
+  transactions:{
+    type: Array
+  },
+  balance: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 999999999
+  },
   fname: {
     type: String,
     required: true

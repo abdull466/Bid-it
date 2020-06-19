@@ -10,10 +10,18 @@
   height: 912px;
   width: 975px;
   box-shadow: 0 1px 5px -1px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  overflow-y: auto;
   position: relative;
   transform: scale(0.9);
   transform-origin: top center;
+}
+
+.iphone {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.iphone::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
 }
 
 .header {
@@ -104,6 +112,7 @@ font-family: 'Montserrat', sans-serif;
   display:flex;
   flex-direction:column;
   width:85%;
+  
 }
 
 .card {
@@ -182,12 +191,14 @@ font-family: 'Montserrat', sans-serif;
 }
 
 .transactions {
+ 
   font-family: 'Montserrat', sans-serif;
   display: flex;
   position: relative;
   margin-top: 1.5rem;
-  flex-direction: column;
+  flex-direction: column;  
 }
+
 
 .t-desc {
   font-size: 0.8rem;
@@ -242,6 +253,13 @@ font-family: 'Montserrat', sans-serif;
   letter-spacing: 1px;
   font-weight: 400;
   color: #06D778;
+}
+
+.t-for {
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  font-weight: 400;
+  color: orange;
 }
 
 .red {

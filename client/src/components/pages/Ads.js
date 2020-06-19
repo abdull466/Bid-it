@@ -3,10 +3,10 @@ import "../../custom.css";
 import Slider from "../Layout/Slider";
 import AdsForm from "../Ads/AdsForm";
 import CustomAds from "../Ads/CustomAds";
- 
+
 import { connect } from "react-redux";
 import breadcump from "../../images/banner/breadcump-img.png";
- 
+
 import {
   getAds,
   getAdsofLoginUser,

@@ -26,7 +26,7 @@ router.get('/', auth, async (req, res) => {
 
 
 router.get("/currUser", auth, function (req, res) {
-  res.json({ usr: req.user.id });
+  res.json({ usr: req.user });
 })
 //send code
 

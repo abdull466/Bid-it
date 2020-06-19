@@ -30,6 +30,7 @@ var currUser = ""
 var rEditable = false;
 var afRating = 0
 var paymentId = ""
+var ad_price = ""
 var aditionalFeedback = false;
 const ApproveBids = (props) => {
   const {
@@ -261,17 +262,34 @@ const ApproveBids = (props) => {
     }, 3000);
   }
 
-  function onewalletPayment(id) {
-    document.getElementById('ewalletLoading').hidden = false
-    document.getElementById('ewalletPane').hidden = true
-    document.getElementById('pagNav').hidden = false
-    donePayment(id)
-    setTimeout(function () {
-      toast("Success! Check Phone / Email for details", { type: "success" });
+  function onewalletPayment(id, pkr) {
+    if (parseInt(pkr) > localStorage.getItem('currBal')) {
+      alert("You dont have enough balance in your wallet to pay...")
+    }
+    else {
+      document.getElementById('ewalletLoading').hidden = false
+      document.getElementById('ewalletPane').hidden = true
+      document.getElementById('pagNav').hidden = false
+      donePayment(id)
       setTimeout(function () {
-        window.location.reload()
-      }, 2000);
-    }, 3000);
+        toast("Success! Check Phone / Email for details", { type: "success" });
+        setTimeout(function () {
+          const data = {
+            for: "Buy Land",
+            agent: "Credit / Debit Card",
+            amount: pkr
+          }
+          axios
+            .post("/api/users/walletOperations", { data })
+            .then(response => {
+            })
+            .catch(error => {
+              console.log("error", error);
+            });
+          window.location.reload()
+        }, 2000);
+      }, 3000);
+    }
   }
 
   function donePayment(id) {
@@ -714,7 +732,7 @@ const ApproveBids = (props) => {
                       <div id="ewalletPane" style={{ 'text-align': 'center' }}>
                         <img width="250px" src={"https://peerbits-wpengine.netdna-ssl.com/wp-content/uploads/2019/11/digital-wallet-payment-be-the-leaders.png"} />
                         <br></br><br></br>
-                        <div style={{ marginLeft: '100px' }}>  <button onClick={() => { onewalletPayment(paymentId) }} className='rt-btn rt-gradient pill text-uppercase rt-Bshadow-1 rt-sm2  d-none d-md-block'><b>Pay from Wallet</b></button>
+                        <div style={{ marginLeft: '100px' }}>  <button onClick={() => { onewalletPayment(paymentId, rupee) }} className='rt-btn rt-gradient pill text-uppercase rt-Bshadow-1 rt-sm2  d-none d-md-block'><b>Pay from Wallet</b></button>
                         </div> </div>
 
                     </RBS.Tab.Pane>

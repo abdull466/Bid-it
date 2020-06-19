@@ -5,18 +5,23 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
-
+import setAuthToken from "../../utils/setAuthToken";
 import * as RBS from 'react-bootstrap'
 import Divider from '@material-ui/core/Divider';
-import StripeCheckout from "react-stripe-checkout";
+// import StripeCheckout from "react-stripe-checkout";
 import $ from 'jquery'
 import { toast } from "react-toastify";
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios'
+import { loadStripe } from '@stripe/stripe-js';
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+
 toast.configure()
 var rupee = ""
 var title = ""
 var desc = "Description Here"
+var prps = ""
 const styles = (theme) => ({
     root: {
         margin: 0,
@@ -29,6 +34,8 @@ const styles = (theme) => ({
         color: theme.palette.grey[500],
     },
 });
+
+
 
 const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -57,124 +64,211 @@ const DialogActions = withStyles((theme) => ({
     },
 }))(MuiDialogActions);
 
-async function handleToken(token, addresses) {
-    const product = {
-        name: title,
-        price: rupee,
-        description: desc
-    };
-    const response = await axios.post(
-        "https://opn6p.sse.codesandbox.io/checkout",
-        { token, product }
-    );
-    const { status } = response.data;
-    console.log("Response:", response.data);
-    if (status === "success") {
-        setTimeout(function () {
-            toast("Success! Check email for details", { type: "success" });
-            setTimeout(function () {
-                window.location.reload()
-            }, 2000);
-        }, 3000);
-    } else {
-        setTimeout(function () {
-            toast("Something went wrong", { type: "error" });
-            setTimeout(function () {
-                window.location.reload()
-            }, 2500);
-        }, 2000);
-    }
-    setTimeout(function () {
-        toast("Success! Check email for details", { type: "success" });
-        setTimeout(function () {
-            window.location.reload()
-        }, 2000);
-    }, 2000);
-    document.getElementById('pagNav').hidden = false
-}
 
-
-function onJazzCashPayment() {
-
-    var tel = document.getElementById('phoneNumber').value;
-    var pkr = document.getElementById('Amount').value;
-
-    if (tel === "" || tel === null) {
-        document.getElementById('phoneNumber').style.borderColor = 'red'
-        document.getElementById('numError').innerText = "* Required"
-    }
-    else if (pkr === "" || pkr === null) {
-        document.getElementById('Amount').style.borderColor = 'red'
-        document.getElementById('numError').innerText = "* Required"
-    }
-    else if (tel.length < 11) {
-        document.getElementById('numError').innerText = "Should be 11 digits"
-    }
-    else if ($("#phoneNumber").val().charAt(0) === '0' &&
-        $("#phoneNumber").val().charAt(1) === '3'
-    ) {
-        document.getElementById('jazzcashLoading').hidden = false
-        document.getElementById('jazzcashPane').hidden = true
-        setTimeout(function () {
-            toast("Success! Check Phone for details", { type: "success" });
-            setTimeout(function () {
-                window.location.reload()
-            }, 2000);
-        }, 3000);
-    }
-    else {
-        document.getElementById('numError').innerText = "Should be Valid Number"
-    }
-}
-
-function onEasyPaisaPayment() {
-    var tel = document.getElementById('phoneNumber2').value;
-    var pkr2 = document.getElementById('Amount2').value;
-
-    if (tel === "" || tel === null) {
-        document.getElementById('phoneNumber2').style.borderColor = 'red'
-        document.getElementById('numError2').innerText = "* Required"
-    }
-    else if (pkr2 === "" || pkr2 === null) {
-        document.getElementById('Amount2').style.borderColor = 'red'
-        document.getElementById('numError').innerText = "* Required"
-    }
-    else if (tel.length < 11) {
-        document.getElementById('numError2').innerText = "Should be 11 digits"
-    }
-    else if ($("#phoneNumber2").val().charAt(0) === '0' &&
-        $("#phoneNumber2").val().charAt(1) === '3'
-    ) {
-        document.getElementById('easypaisaLoading').hidden = false
-        document.getElementById('easypaisaPane').hidden = true
-        setTimeout(function () {
-            toast("Success! Check Phone for details", { type: "success" });
-            setTimeout(function () {
-                window.location.reload()
-            }, 2000);
-        }, 3000);
-    }
-    else {
-        document.getElementById('numError2').innerText = "Should be Valid Number"
-    }
-}
-
-
-function validateNumber() {
-    var val = document.getElementById('phoneNumber').value;
-    val = val.replace(/[^\d]/, '')
-    document.getElementById('phoneNumber').value = val
-}
-
-function validateNumber2() {
-    var val = document.getElementById('phoneNumber2').value;
-    val = val.replace(/[^\d]/, '')
-    document.getElementById('phoneNumber2').value = val
-}
 
 
 export default function CustomizedDialogs(props) {
-    
+
+    setAuthToken(localStorage.getItem('token'));
+    if (!localStorage.token) {
+        window.location.href = "/";
+    }
+
+    const handleClick = async (event) => {
+        // Call your backend to create the Checkout session.
+        const data = {
+            pkr: document.getElementById("Amount3").value,
+            for: localStorage.getItem('payType')
+        }
+        if (data.pkr <= 100) {
+            alert("Please Enter amount Greater than PKR 100 /-")
+        }
+        else {
+            await axios.post('api/users/stripeSession', data)
+                .then(response => {
+                    // alert("ENTERED")
+                    const sessId = response.data;
+                    const stripe = window.Stripe("pk_test_5DWODAZ4Hx8ZRJMGo9nsm9GQ00Pdz17AB0");
+                    const { error } = stripe.redirectToCheckout({
+                        sessionId: sessId.id
+                    });
+                })
+                .catch(error => {
+                    console.log("error", error);
+                });
+        };
+    }
+
+    prps = props.name
+    localStorage.setItem('payType', prps)
+
+    async function handleToken(token, addresses) {
+        const product = {
+            name: title,
+            price: rupee,
+            description: desc
+        };
+        const response = await axios.post(
+            "https://opn6p.sse.codesandbox.io/checkout",
+            { token, product }
+        );
+        const { status } = response.data;
+        console.log("Response:", response.data);
+        if (status === "success") {
+            setTimeout(function () {
+                toast("Success! Check email for details", { type: "success" });
+                setTimeout(function () {
+                    window.location.reload()
+                }, 2000);
+            }, 3000);
+        } else {
+            setTimeout(function () {
+                toast("Something went wrong", { type: "error" });
+                setTimeout(function () {
+                    window.location.reload()
+                }, 2500);
+            }, 2000);
+        }
+        setTimeout(function () {
+            toast("Success! Check email for details", { type: "success" });
+            setTimeout(function () {
+                const data = {
+                    for: props.name,
+                    agent: "Debit/Credit Card",
+                    amount: rupee
+                }
+                axios
+                    .post("/api/users/walletOperations", { data })
+                    .then(response => {
+
+                    })
+                    .catch(error => {
+                        console.log("error", error);
+                    });
+                window.location.reload()
+            }, 2000);
+        }, 2000);
+        document.getElementById('pagNav').hidden = false
+    }
+
+
+    function onJazzCashPayment() {
+
+        var tel = document.getElementById('phoneNumber').value;
+        var pkr = document.getElementById('Amount').value;
+        
+        if(props.name !== "Recharge" && pkr > localStorage.getItem('currBal'))
+        {
+            alert("You dont have enough balance to "+props.name)
+        }
+        else{
+       
+
+        if (tel === "" || tel === null) {
+            document.getElementById('phoneNumber').style.borderColor = 'red'
+            document.getElementById('numError').innerText = "* Required"
+        }
+        else if (pkr === "" || pkr === null) {
+            document.getElementById('Amount').style.borderColor = 'red'
+            document.getElementById('numError').innerText = "* Required"
+        }
+        else if (tel.length < 11) {
+            document.getElementById('numError').innerText = "Should be 11 digits"
+        }
+        else if ($("#phoneNumber").val().charAt(0) === '0' &&
+            $("#phoneNumber").val().charAt(1) === '3'
+        ) {
+            document.getElementById('jazzcashLoading').hidden = false
+            document.getElementById('jazzcashPane').hidden = true
+            setTimeout(function () {
+                toast("Success! Check Phone for details", { type: "success" });
+                setTimeout(function () {
+                    const data = {
+                        for: props.name,
+                        agent: "JazzCash",
+                        amount: pkr
+                    }
+
+
+                    axios
+                        .post("/api/users/walletOperations", { data })
+                        .then(response => {
+                        })
+                        .catch(error => {
+                            console.log("error", error);
+                        });
+                    window.location.reload()
+                }, 2000);
+            }, 3000);
+        }
+        else {
+            document.getElementById('numError').innerText = "Should be Valid Number"
+        }
+    }
+    }
+
+    function onEasyPaisaPayment() {
+        var tel = document.getElementById('phoneNumber2').value;
+        var pkr2 = document.getElementById('Amount2').value;
+
+        if (tel === "" || tel === null) {
+            document.getElementById('phoneNumber2').style.borderColor = 'red'
+            document.getElementById('numError2').innerText = "* Required"
+        }
+        else if (pkr2 === "" || pkr2 === null) {
+            document.getElementById('Amount2').style.borderColor = 'red'
+            document.getElementById('numError').innerText = "* Required"
+        }
+        else if (tel.length < 11) {
+            document.getElementById('numError2').innerText = "Should be 11 digits"
+        }
+        else if ($("#phoneNumber2").val().charAt(0) === '0' &&
+            $("#phoneNumber2").val().charAt(1) === '3'
+        ) {
+            document.getElementById('easypaisaLoading').hidden = false
+            document.getElementById('easypaisaPane').hidden = true
+            setTimeout(function () {
+                toast("Success! Check Phone for details", { type: "success" });
+                setTimeout(function () {
+                    const data = {
+                        for: props.name,
+                        agent: "EasyPaisa",
+                        amount: pkr2
+                    }
+                    axios
+                        .post("/api/users/walletOperations", { data })
+                        .then(response => {
+                            // adData = response.data.allResult;
+                            // imags = response.data.allResult.image
+                            // bdl = response.data.bidsL;
+                            // console.log("Data", adData);
+                        })
+                        .catch(error => {
+                            console.log("error", error);
+                        });
+                    window.location.reload()
+                }, 2000);
+            }, 3000);
+
+
+        }
+        else {
+            document.getElementById('numError2').innerText = "Should be Valid Number"
+        }
+    }
+
+
+    function validateNumber() {
+        var val = document.getElementById('phoneNumber').value;
+        val = val.replace(/[^\d]/, '')
+        document.getElementById('phoneNumber').value = val
+    }
+
+    function validateNumber2() {
+        var val = document.getElementById('phoneNumber2').value;
+        val = val.replace(/[^\d]/, '')
+        document.getElementById('phoneNumber2').value = val
+    }
 
     const [open, setOpen] = React.useState(false);
 
@@ -193,7 +287,7 @@ export default function CustomizedDialogs(props) {
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     E-Wallet {props.name}
-        </DialogTitle>
+                </DialogTitle>
                 <DialogContent dividers>
                     <RBS.Modal.Dialog >
                         <RBS.Modal.Header >
@@ -288,13 +382,20 @@ export default function CustomizedDialogs(props) {
                                             </RBS.Tab.Pane>
                                             <RBS.Tab.Pane eventKey="third">
                                                 <br></br><br></br><br></br>
+                                                {/*                                                
                                                 <StripeCheckout
                                                     style={{ marginLeft: '80px' }}
                                                     stripeKey="pk_test_5DWODAZ4Hx8ZRJMGo9nsm9GQ00Pdz17AB0"
                                                     token={handleToken}
                                                     amount={rupee}
                                                     name={title}
-                                                />
+                                                /> */}
+
+                                                PKR : <input id="Amount3" maxLength={7} placeholder="e.g 9000" required={true} />
+                                                <button role="link" onClick={handleClick}>
+                                                    Checkout
+                                                </button>
+
                                             </RBS.Tab.Pane>
                                             {/* <RBS.Tab.Pane eventKey="forth">
                                                 <img id="codLoading" src={"https://developertest.jazzcash.com.pk/store/site/themes/wso2/images/loader.gif"} hidden={true} />
