@@ -80,10 +80,10 @@ export default function CustomizedDialogs(props) {
             pkr: document.getElementById("Amount3").value,
             for: localStorage.getItem('payType')
         }
-        if (data.pkr <= 100) {
-            alert("Please Enter amount Greater than PKR 100 /-")
+        if (data.pkr <= 1000) {
+            alert("Please Enter amount Greater than PKR 1000 /-")
         }
-        else if (data.pkr > localStorage.getItem('currBal')) {
+        else if (props.name !== "Recharge" && data.pkr > localStorage.getItem('currBal')) {
             alert("You dont have enough balance to " + props.name)
         }
 
