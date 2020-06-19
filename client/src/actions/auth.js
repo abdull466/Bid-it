@@ -198,7 +198,7 @@ export const login = (user) => async (dispatch) => {
     //       console.log('Error logging in: ', err);
     //     }
     //   );
-
+    dispatch(loadUser());
 
   } catch (err) {
     const errors = err.response.data.errors;
