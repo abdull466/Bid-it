@@ -1,8 +1,9 @@
 import React from 'react';
 import cover from '../../images/banner/breadcump-img.png';
 
-var a = localStorage.getItem('chatID')
-var url = "https://webbiding-chatapp.firebaseapp.com/login/" + a
+var a = localStorage.getItem('currUser')
+var b = localStorage.getItem('pass')
+var url = "https://web-bid-it.herokuapp.com/login/" + a + "/" + b
 const CHAT = (props) => {
     return (
         <React.Fragment>

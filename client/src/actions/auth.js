@@ -152,52 +152,52 @@ export const login = (user) => async (dispatch) => {
     });
 
     localStorage.setItem('currUser', email)
+    localStorage.setItem('pass', password)
+    // firebase
+    //   .auth()
+    //   .signInWithEmailAndPassword(email, password)
+    //   .then(
+    //     () => {
+    //       var user_id_token = ""
+    //       firebase.auth().onAuthStateChanged((user) => {
+    //         if (user) {
+    //           alert("AUTH USER" + user.email)
+    //           console.log('user is logged' + user.email);
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(
-        () => {
-          var user_id_token = ""
-          firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-              alert("AUTH USER" + user.email)
-              console.log('user is logged' + user.email);
+    //           firebase.auth().currentUser.getIdToken().then(function (idToken) {
+    //             user_id_token = idToken
+    //             //   alert("USER_ID_TOKEN : " + user_id_token)
 
-              firebase.auth().currentUser.getIdToken().then(function (idToken) {
-                user_id_token = idToken
-                //   alert("USER_ID_TOKEN : " + user_id_token)
+    //           }).catch(function (error) {
+    //             // Handle error
+    //           });
 
-              }).catch(function (error) {
-                // Handle error
-              });
+    //           admin.auth().createCustomToken(email)
+    //             .then(function (customToken) {
+    //               //   alert(customToken)
+    //               console.log(customToken)
+    //               localStorage.setItem('chatID', customToken)
+    //               dispatch(loadUser());
+    //             })
+    //             .catch(function (error) {
+    //               alert("Error generating token");
+    //               console.log('Error creating custom token:', error);
+    //             });
 
-              admin.auth().createCustomToken(email)
-                .then(function (customToken) {
-                  //   alert(customToken)
-                  console.log(customToken)
-                  localStorage.setItem('chatID', customToken)
-                  dispatch(loadUser());
-                })
-                .catch(function (error) {
-                  alert("Error generating token");
-                  console.log('Error creating custom token:', error);
-                });
-
-            }
-            else {
-              alert("AUTH STATE ERROR")
-            }
-          });
-          //   alert('Firebase Logged In');
-          // this.props.history.push('/dashboard');
-        },
-        (err) => {
-          alert('ERROR');
-          // this.setState({ serverError: true });
-          console.log('Error logging in: ', err);
-        }
-      );
+    //         }
+    //         else {
+    //           alert("AUTH STATE ERROR")
+    //         }
+    //       });
+    //       //   alert('Firebase Logged In');
+    //       // this.props.history.push('/dashboard');
+    //     },
+    //     (err) => {
+    //       alert('ERROR');
+    //       // this.setState({ serverError: true });
+    //       console.log('Error logging in: ', err);
+    //     }
+    //   );
 
 
   } catch (err) {
