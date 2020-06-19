@@ -83,6 +83,10 @@ export default function CustomizedDialogs(props) {
         if (data.pkr <= 100) {
             alert("Please Enter amount Greater than PKR 100 /-")
         }
+        else if (data.pkr > localStorage.getItem('currBal')) {
+            alert("You dont have enough balance to " + props.name)
+        }
+
         else {
             await axios.post('api/users/stripeSession', data)
                 .then(response => {
@@ -156,104 +160,109 @@ export default function CustomizedDialogs(props) {
 
         var tel = document.getElementById('phoneNumber').value;
         var pkr = document.getElementById('Amount').value;
-        
-        if(props.name !== "Recharge" && pkr > localStorage.getItem('currBal'))
-        {
-            alert("You dont have enough balance to "+props.name)
-        }
-        else{
-       
 
-        if (tel === "" || tel === null) {
-            document.getElementById('phoneNumber').style.borderColor = 'red'
-            document.getElementById('numError').innerText = "* Required"
-        }
-        else if (pkr === "" || pkr === null) {
-            document.getElementById('Amount').style.borderColor = 'red'
-            document.getElementById('numError').innerText = "* Required"
-        }
-        else if (tel.length < 11) {
-            document.getElementById('numError').innerText = "Should be 11 digits"
-        }
-        else if ($("#phoneNumber").val().charAt(0) === '0' &&
-            $("#phoneNumber").val().charAt(1) === '3'
-        ) {
-            document.getElementById('jazzcashLoading').hidden = false
-            document.getElementById('jazzcashPane').hidden = true
-            setTimeout(function () {
-                toast("Success! Check Phone for details", { type: "success" });
-                setTimeout(function () {
-                    const data = {
-                        for: props.name,
-                        agent: "JazzCash",
-                        amount: pkr
-                    }
-
-
-                    axios
-                        .post("/api/users/walletOperations", { data })
-                        .then(response => {
-                        })
-                        .catch(error => {
-                            console.log("error", error);
-                        });
-                    window.location.reload()
-                }, 2000);
-            }, 3000);
+        if (props.name !== "Recharge" && pkr > localStorage.getItem('currBal')) {
+            alert("You dont have enough balance to " + props.name)
         }
         else {
-            document.getElementById('numError').innerText = "Should be Valid Number"
+
+
+            if (tel === "" || tel === null) {
+                document.getElementById('phoneNumber').style.borderColor = 'red'
+                document.getElementById('numError').innerText = "* Required"
+            }
+            else if (pkr === "" || pkr === null) {
+                document.getElementById('Amount').style.borderColor = 'red'
+                document.getElementById('numError').innerText = "* Required"
+            }
+            else if (tel.length < 11) {
+                document.getElementById('numError').innerText = "Should be 11 digits"
+            }
+            else if ($("#phoneNumber").val().charAt(0) === '0' &&
+                $("#phoneNumber").val().charAt(1) === '3'
+            ) {
+                document.getElementById('jazzcashLoading').hidden = false
+                document.getElementById('jazzcashPane').hidden = true
+                setTimeout(function () {
+                    toast("Success! Check Phone for details", { type: "success" });
+                    setTimeout(function () {
+                        const data = {
+                            for: props.name,
+                            agent: "JazzCash",
+                            amount: pkr
+                        }
+
+
+                        axios
+                            .post("/api/users/walletOperations", { data })
+                            .then(response => {
+                            })
+                            .catch(error => {
+                                console.log("error", error);
+                            });
+                        window.location.reload()
+                    }, 2000);
+                }, 3000);
+            }
+            else {
+                document.getElementById('numError').innerText = "Should be Valid Number"
+            }
         }
-    }
     }
 
     function onEasyPaisaPayment() {
         var tel = document.getElementById('phoneNumber2').value;
         var pkr2 = document.getElementById('Amount2').value;
 
-        if (tel === "" || tel === null) {
-            document.getElementById('phoneNumber2').style.borderColor = 'red'
-            document.getElementById('numError2').innerText = "* Required"
-        }
-        else if (pkr2 === "" || pkr2 === null) {
-            document.getElementById('Amount2').style.borderColor = 'red'
-            document.getElementById('numError').innerText = "* Required"
-        }
-        else if (tel.length < 11) {
-            document.getElementById('numError2').innerText = "Should be 11 digits"
-        }
-        else if ($("#phoneNumber2").val().charAt(0) === '0' &&
-            $("#phoneNumber2").val().charAt(1) === '3'
-        ) {
-            document.getElementById('easypaisaLoading').hidden = false
-            document.getElementById('easypaisaPane').hidden = true
-            setTimeout(function () {
-                toast("Success! Check Phone for details", { type: "success" });
-                setTimeout(function () {
-                    const data = {
-                        for: props.name,
-                        agent: "EasyPaisa",
-                        amount: pkr2
-                    }
-                    axios
-                        .post("/api/users/walletOperations", { data })
-                        .then(response => {
-                            // adData = response.data.allResult;
-                            // imags = response.data.allResult.image
-                            // bdl = response.data.bidsL;
-                            // console.log("Data", adData);
-                        })
-                        .catch(error => {
-                            console.log("error", error);
-                        });
-                    window.location.reload()
-                }, 2000);
-            }, 3000);
-
-
+        if (props.name !== "Recharge" && pkr2 > localStorage.getItem('currBal')) {
+            alert("You dont have enough balance to " + props.name)
         }
         else {
-            document.getElementById('numError2').innerText = "Should be Valid Number"
+
+            if (tel === "" || tel === null) {
+                document.getElementById('phoneNumber2').style.borderColor = 'red'
+                document.getElementById('numError2').innerText = "* Required"
+            }
+            else if (pkr2 === "" || pkr2 === null) {
+                document.getElementById('Amount2').style.borderColor = 'red'
+                document.getElementById('numError').innerText = "* Required"
+            }
+            else if (tel.length < 11) {
+                document.getElementById('numError2').innerText = "Should be 11 digits"
+            }
+            else if ($("#phoneNumber2").val().charAt(0) === '0' &&
+                $("#phoneNumber2").val().charAt(1) === '3'
+            ) {
+                document.getElementById('easypaisaLoading').hidden = false
+                document.getElementById('easypaisaPane').hidden = true
+                setTimeout(function () {
+                    toast("Success! Check Phone for details", { type: "success" });
+                    setTimeout(function () {
+                        const data = {
+                            for: props.name,
+                            agent: "EasyPaisa",
+                            amount: pkr2
+                        }
+                        axios
+                            .post("/api/users/walletOperations", { data })
+                            .then(response => {
+                                // adData = response.data.allResult;
+                                // imags = response.data.allResult.image
+                                // bdl = response.data.bidsL;
+                                // console.log("Data", adData);
+                            })
+                            .catch(error => {
+                                console.log("error", error);
+                            });
+                        window.location.reload()
+                    }, 2000);
+                }, 3000);
+
+
+            }
+            else {
+                document.getElementById('numError2').innerText = "Should be Valid Number"
+            }
         }
     }
 

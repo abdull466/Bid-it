@@ -137,8 +137,8 @@ router.post('/stripeSession', auth, async (req, res) => {
           quantity: 1,
         }],
         mode: 'payment',
-        success_url: 'https://www.web-bid-it.herokuapp.com/myWallet/card_payment/success/?PKR=' + pkr / 100 + "&FOR=" + req.body.for,
-        cancel_url: 'https://www.web-bid-it.herokuapp.com/myWallet/card_payment/failed'
+        success_url: 'https://web-bid-it.herokuapp.com/myWallet/card_payment/success/?PKR=' + pkr / 100 + "&FOR=" + req.body.for,
+        cancel_url: 'https://web-bid-it.herokuapp.com/myWallet/card_payment/failed'
       });
 
       res.json(sess)
