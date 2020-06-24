@@ -218,9 +218,9 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem('currUser')
   localStorage.removeItem('pass')
   localStorage.removeItem('chatID')
-  setTimeout(() =>{
+  setTimeout(() => {
     window.location.href = "/";
-  },2000)
+  }, 1300)
 
 };
 
