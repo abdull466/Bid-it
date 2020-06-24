@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -148,8 +150,9 @@ router.post('/stripeSession', auth, async (req, res) => {
 
 router.post('/walletOperations', auth, async (req, res) => {
 
-  var currentdate = new Date();
-  var datetime = " " + currentdate.toLocaleString()
+  var date = new Date();
+  var datetime = moment(date).format('llll');
+
   try {
     const user = await User.findById(req.user.id);
     if (!user) {

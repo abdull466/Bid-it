@@ -82,6 +82,9 @@ export default class WalletLayout extends Component {
                     <span>My Save it</span>
                     <h4 class="dollar"> PKR {this.state.balance.toFixed(2)} /-</h4>
                   </div>
+                  <div class="icon-item">
+                    <div class="icon" style={{ fontSize: '30px', cursor: 'pointer' }} onClick={() => { window.location.reload() }}> <i class="fas fa-sync-alt"></i></div>
+                  </div>
                 </div>
                 <div class="lower-row">
                   <div class="icon-item">

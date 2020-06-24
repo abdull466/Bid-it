@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fd9eab6e06052f96b031bd89b242fe17",
+    "revision": "c3f834019d922f078361367e49fde60d",
     "url": "/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/css/2.d34346ea.chunk.css"
   },
   {
-    "revision": "ae614ae9a3968dd7ad6f",
+    "revision": "23e02431a67390b1f1a1",
     "url": "/static/css/main.9741d9a1.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/2.b0279b3e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ae614ae9a3968dd7ad6f",
-    "url": "/static/js/main.c516e2ba.chunk.js"
+    "revision": "23e02431a67390b1f1a1",
+    "url": "/static/js/main.d3ec68bd.chunk.js"
   },
   {
     "revision": "13c5ce7c89dba05c4fba",
@@ -36,8 +36,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/media/breadcump-img.46b57b89.png"
   },
   {
-    "revision": "e2ac6fe67bb3043e57bbf2cbd3f3ffc4",
-    "url": "/static/media/logo.e2ac6fe6.png"
+    "revision": "b98b0888023a0ff87123aeaf5a15ef20",
+    "url": "/static/media/logo1.b98b0888.png"
   },
   {
     "revision": "9dd4a6fb6fedada1dcb783efb128d565",

@@ -4,9 +4,10 @@ import { Link, Redirect } from 'react-router-dom';
 import { logout } from '../../actions/auth';
 import top2 from '../../images/all-img/top-2.png';
 import top1 from '../../images/all-img/top-1.png';
-import logo from '../../images/all-img/logo.png';
+import logo from '../../images/all-img/logo1.png';
 import logo2 from '../../images/all-img/logo2.png';
 import logo3 from '../../images/all-img/icon_6.png';
+
 
 const Navbar = ({
   auth: { isAuthenticated, loading, user },
@@ -269,8 +270,7 @@ const Navbar = ({
           <nav className='navbar'>
             <div className='container'>
               <Link to='' className='brand-logo'>
-                <img width='150px' src={logo} />
-
+                <img width='95px' src={logo} />
               </Link>
               <Link to='' className='sticky-logo'>
                 <img width='75px' src={logo} />
