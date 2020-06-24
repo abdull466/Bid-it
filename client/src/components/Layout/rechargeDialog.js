@@ -216,8 +216,9 @@ export default function CustomizedDialogs(props) {
     function onEasyPaisaPayment() {
         var tel = document.getElementById('phoneNumber2').value;
         var pkr2 = document.getElementById('Amount2').value;
+        var bal = localStorage.getItem('currBal');
 
-        if (props.name !== "Recharge" && pkr2 > localStorage.getItem('currBal')) {
+        if (props.name !== "Recharge" && pkr2 > bal) {
             swal(props.name + " Failed!", "You dont have enough balance to " + props.name, "error");
         }
         else {
