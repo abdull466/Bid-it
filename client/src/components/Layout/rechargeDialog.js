@@ -218,7 +218,7 @@ export default function CustomizedDialogs(props) {
         var pkr2 = document.getElementById('Amount2').value;
         var bal = localStorage.getItem('currBal');
 
-        if (props.name !== "Recharge" && pkr2 > bal) {
+        if (props.name !== "Recharge" && pkr2 > parseFloat(bal)) {
             swal(props.name + " Failed!", "You dont have enough balance to " + props.name, "error");
         }
         else {
