@@ -5,7 +5,7 @@ localStorage.removeItem('newMessage')
 var a = localStorage.getItem('currUser')
 var b = localStorage.getItem('pass')
 
-var url = "http://webbiding-chatapp.firebaseapp.com/login/" + a + "/" + b
+var url = "https://webbiding-chatapp.firebaseapp.com/login/" + a + "/" + b
 
 
 const CHAT = (props) => {
