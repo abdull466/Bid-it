@@ -19,13 +19,13 @@ import setAuthToken from "../utils/setAuthToken";
 import { setAlert } from "./alert";
 import axios from "axios";
 const firebase = require('firebase');
-var admin = require("firebase-admin");
-var serviceAccount = require("./firebase-adminsdk.json");
+// var admin = require("firebase-admin");
+// var serviceAccount = require("./firebase-adminsdk.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://webbiding-chatapp.firebaseio.com"
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://webbiding-chatapp.firebaseio.com"
+// });
 
 export const getAllusers = () => async (dispatch) => {
   try {
@@ -213,9 +213,15 @@ export const login = (user) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
+  document.getElementById('chatFrame').src = 'https://webbiding-chatapp.firebaseapp.com/logout';
+
   localStorage.removeItem('currUser')
+  localStorage.removeItem('pass')
   localStorage.removeItem('chatID')
-  window.location.href = "/";
+  setTimeout(() =>{
+    window.location.href = "/";
+  },2000)
+
 };
 
 export const getProfile = () => async (dispatch) => {

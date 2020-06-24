@@ -52,6 +52,12 @@ firebase.initializeApp({
   measurementId: 'G-TKZ07Q217W',
 });
 
+// return firebase.database().ref('/users/' + '956a2e68-86fa-4fad-a2d1-7daf73b536e6').once('value').then(function (snapshot) {
+//   var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+//   alert(username)
+//   // ...
+// });
+
 function App(props) {
   useEffect(() => {
     console.log(localStorage.getItem('token'));

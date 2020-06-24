@@ -1,9 +1,13 @@
 import React from 'react';
 import cover from '../../images/banner/breadcump-img.png';
 
+localStorage.removeItem('newMessage')
 var a = localStorage.getItem('currUser')
 var b = localStorage.getItem('pass')
-var url = "https://webbiding-chatapp.firebaseapp.com/login/" + a + "/" + b
+
+var url = "http://webbiding-chatapp.firebaseapp.com/login/" + a + "/" + b
+
+
 const CHAT = (props) => {
     return (
         <React.Fragment>
@@ -53,6 +57,7 @@ const CHAT = (props) => {
                     <div >
                         <br></br><br></br>
                         < iframe
+                            id="chatFrame"
                             width="1000px"
                             height="500px"
                             src={url}

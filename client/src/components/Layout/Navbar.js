@@ -7,6 +7,7 @@ import top1 from '../../images/all-img/top-1.png';
 import logo from '../../images/all-img/logo.png';
 import logo2 from '../../images/all-img/logo2.png';
 import logo3 from '../../images/all-img/icon_6.png';
+
 const Navbar = ({
   auth: { isAuthenticated, loading, user },
   logout,

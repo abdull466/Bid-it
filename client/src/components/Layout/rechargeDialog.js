@@ -13,6 +13,7 @@ import $ from 'jquery'
 import { toast } from "react-toastify";
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios'
+import swal from 'sweetalert'
 import { loadStripe } from '@stripe/stripe-js';
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -75,16 +76,17 @@ export default function CustomizedDialogs(props) {
     }
 
     const handleClick = async (event) => {
+        var bal = localStorage.getItem('currBal')
         // Call your backend to create the Checkout session.
         const data = {
             pkr: document.getElementById("Amount3").value,
             for: localStorage.getItem('payType')
         }
         if (data.pkr <= 1000) {
-            alert("Please Enter amount Greater than PKR 1000 /-")
+            swal(props.name + " Info!", "Please enter amount greater than 1000 ", "info");
         }
-        else if (props.name !== "Recharge" && data.pkr > localStorage.getItem('currBal')) {
-            alert("You dont have enough balance to " + props.name)
+        else if (props.name !== "Recharge" && data.pkr > parseFloat(bal)) {
+            swal(props.name + " Failed!", "You dont have enough balance to " + props.name, "error");
         }
 
         else {
@@ -160,9 +162,10 @@ export default function CustomizedDialogs(props) {
 
         var tel = document.getElementById('phoneNumber').value;
         var pkr = document.getElementById('Amount').value;
+        var bal = localStorage.getItem('currBal')
 
-        if (props.name !== "Recharge" && pkr > localStorage.getItem('currBal')) {
-            alert("You dont have enough balance to " + props.name)
+        if (props.name !== "Recharge" && pkr > parseFloat(bal)) {
+            swal(props.name + " Failed!", "You dont have enough balance to " + props.name, "error");
         }
         else {
 
@@ -215,7 +218,7 @@ export default function CustomizedDialogs(props) {
         var pkr2 = document.getElementById('Amount2').value;
 
         if (props.name !== "Recharge" && pkr2 > localStorage.getItem('currBal')) {
-            alert("You dont have enough balance to " + props.name)
+            swal(props.name + " Failed!", "You dont have enough balance to " + props.name, "error");
         }
         else {
 
