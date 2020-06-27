@@ -13,7 +13,7 @@ let adData = "";
 var imags = []
 var bdl = ""
 var id = window.location.href;
-id = id.slice(38)
+id = id.slice(27)
 //alert(id)
 
 const Bid = (props) => {

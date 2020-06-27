@@ -213,11 +213,15 @@ export const login = (user) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
-  document.getElementById('chatFrame').src = 'https://webbiding-chatapp.firebaseapp.com/logout';
+  var chatStatus = localStorage.getItem('chat')
+  if (chatStatus === 'initiated') {
+    var win = window.open("https://webbiding-chatapp.firebaseapp.com/logout", "_blank", "width=200,height=100");
+    setTimeout(() => { win.close() }, 5000);
 
+  }
   localStorage.removeItem('currUser')
   localStorage.removeItem('pass')
-  localStorage.removeItem('chatID')
+  localStorage.removeItem('chat')
   setTimeout(() => {
     window.location.href = "/";
   }, 1300)

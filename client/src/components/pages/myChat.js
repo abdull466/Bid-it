@@ -1,7 +1,6 @@
 import React from 'react';
 import cover from '../../images/banner/breadcump-img.png';
 
-localStorage.removeItem('newMessage')
 var a = localStorage.getItem('currUser')
 var b = localStorage.getItem('pass')
 

@@ -74,7 +74,7 @@ const Navbar = ({
             </li>
 
             <li className='menu-item'>
-              <Link to='/myChat'>Chat</Link>
+              <Link to='/myChat' onClick={() => { localStorage.setItem('chat', 'initiated') }}>Chat</Link>
             </li>
 
             <li className='menu-item'>
