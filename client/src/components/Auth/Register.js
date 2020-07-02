@@ -103,23 +103,57 @@ const Register = (props) => {
 
       var fileName = timestamp + file.name;
       var storageRef = firebase.storage().ref(fileName);
-     // link = "ddddd";
+      // link = "ddddd";
       storageRef.put(file).then(function (snapshot) {
         //  alert("img upload")
         console.log('Image Successfully Uploaded...!');
         const ref = firebase.storage().ref(fileName);
         var res = ref.getDownloadURL().then(async function (url) {
           console.log("this:" + url)
-          registerUser({
-            fname,
-            lname,
-            email,
-            mobile,
-            image: url,
-            country,
-            city,
-            password,
-          });
+
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(
+              (authRes) => {
+                const userObj = {
+                  email: authRes.user.email,
+                  friends: [],
+                  messages: [],
+                };
+                firebase
+                  .firestore()
+                  .collection('users')
+                  .doc(email)
+                  .set(userObj)
+                  .then(
+                    () => {
+                      // this.props.history.push('/dashboard');
+                    },
+                    (dbErr) => {
+                      console.log('Failed to add user to the database: ', dbErr);
+                      //   this.setState({ signupError: 'Failed to add user' });
+                    }
+                  );
+              },
+              (authErr) => {
+                console.log('Failed to create user: ', authErr);
+                //  this.setState({ signupError: 'Failed to add user' });
+              }
+            );
+          setTimeout(function () {
+            registerUser({
+              fname,
+              lname,
+              email,
+              mobile,
+              image: url,
+              country,
+              city,
+              password,
+            });
+          }, 2500)
+
           // updateProfile(data);
           //  alert("Profile Updated Successfully...")
           //  setUimage('');
@@ -151,36 +185,6 @@ const Register = (props) => {
       //   console.log(err);
       // }
 
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(
-          (authRes) => {
-            const userObj = {
-              email: authRes.user.email,
-              friends: [],
-              messages: [],
-            };
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(email)
-              .set(userObj)
-              .then(
-                () => {
-                  // this.props.history.push('/dashboard');
-                },
-                (dbErr) => {
-                  console.log('Failed to add user to the database: ', dbErr);
-                  //   this.setState({ signupError: 'Failed to add user' });
-                }
-              );
-          },
-          (authErr) => {
-            console.log('Failed to create user: ', authErr);
-            //  this.setState({ signupError: 'Failed to add user' });
-          }
-        );
     }
   };
 
