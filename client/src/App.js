@@ -38,31 +38,13 @@ if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-const firebase = require('firebase');
-require('firebase/firestore'); // Required for side-effects?????
-
-firebase.initializeApp({
-  apiKey: 'AIzaSyD8Cv51eKlevrpZ7ihnYyAQTehMJOmOczQ',
-  authDomain: 'webbiding-chatapp.firebaseapp.com',
-  databaseURL: 'https://webbiding-chatapp.firebaseio.com',
-  projectId: 'webbiding-chatapp',
-  storageBucket: 'webbiding-chatapp.appspot.com',
-  messagingSenderId: '158591991087',
-  appId: '1:158591991087:web:b472b1ba8dda08ca8ff5da',
-  measurementId: 'G-TKZ07Q217W',
-});
-
-// return firebase.database().ref('/users/' + '956a2e68-86fa-4fad-a2d1-7daf73b536e6').once('value').then(function (snapshot) {
-//   var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-//   alert(username)
-//   // ...
-// });
 
 function App(props) {
   useEffect(() => {
     console.log(localStorage.getItem('token'));
     store.dispatch(loadUser());
   }, []);
+
 
   return (
     <Provider store={store}>

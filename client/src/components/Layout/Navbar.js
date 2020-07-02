@@ -7,13 +7,79 @@ import top1 from '../../images/all-img/top-1.png';
 import logo from '../../images/all-img/logo1.png';
 import logo2 from '../../images/all-img/logo2.png';
 import logo3 from '../../images/all-img/icon_6.png';
+import Badge from '@material-ui/core/Badge';
 
+
+const firebase = require('firebase');
+require('firebase/firestore'); // Required for side-effects?????
+
+firebase.initializeApp({
+  apiKey: "AIzaSyD8Cv51eKlevrpZ7ihnYyAQTehMJOmOczQ",
+  authDomain: "webbiding-chatapp.firebaseapp.com",
+  databaseURL: "https://webbiding-chatapp.firebaseio.com",
+  projectId: "webbiding-chatapp",
+  storageBucket: "webbiding-chatapp.appspot.com",
+  messagingSenderId: "158591991087",
+  appId: "1:158591991087:web:e50933a2227b92b68ff5da",
+  measurementId: "G-NB2VQZHLKX"
+});
+
+window.setInterval(function () {
+  // document.getElementById('for_nwm').innerText = "Chat"
+  var currUsr = localStorage.getItem('currUser')
+  if(currUsr !== null)
+  {
+  localStorage.setItem('nwm', false)
+
+  firebase
+    .firestore().collection("chats").get().then((chat) => {
+      chat.forEach((doc) => {
+        if (doc.id.includes(currUsr)) {
+          console.log(`${doc.id} => ${doc.data().receiverHasRead}`);
+          if (doc.data().receiverHasRead === false && !(doc.data().messages[doc.data().messages.length - 1].sender === currUsr)) {
+            //alert('You have new Message')
+            localStorage.setItem('nwm', true)
+            document.getElementById('new_msg').style.display = ''
+            document.getElementById('no_msg').style.display = 'none'
+          }
+        }
+        // console.log(`${doc.id.includes('saqlainch92786@gmail.com')} => ${doc.data().receiverHasRead}`);
+      });
+    });
+  setTimeout(function () {
+    if (localStorage.getItem('nwm') === "false") {
+      document.getElementById('new_msg').style.display = 'none'
+      document.getElementById('no_msg').style.display = ''
+    }
+  }, 1300)
+}
+}, 2200)
+
+
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     '& > *': {
+//       margin: theme.spacing(1),
+//     },
+//   },
+// }));
 
 const Navbar = ({
   auth: { isAuthenticated, loading, user },
   logout,
   title,
 }) => {
+  var msg = 'NO'
+  window.addEventListener("storage", () => {
+    alert('chng')
+    if (localStorage.getItem('nwm') === true) {
+      msg = 'YES'
+    }
+    else {
+      msg = 'NO'
+    }
+  })
+
   const guestLinks = (
     <React.Fragment>
       <li className='menu-item'>
@@ -53,7 +119,8 @@ const Navbar = ({
           </li>
         </React.Fragment>
       ) : (
-          <React.Fragment>
+
+          < React.Fragment >
             <li className='current-menu-item'>
               <Link to='/'>Home</Link>
             </li>
@@ -73,9 +140,16 @@ const Navbar = ({
               <Link to='/myWallet'>Wallet</Link>
             </li>
 
-            <li className='menu-item'>
+            <li className='menu-item' style={{ display: 'none' }} id="new_msg">
+              <Badge badgeContent="new" color="secondary">
+                <Link style={{ color: 'white' }} to='/myChat' onClick={() => { localStorage.setItem('chat', 'initiated') }}>Chat</Link>
+              </Badge>
+            </li>
+
+            <li className='menu-item' id="no_msg">
               <Link to='/myChat' onClick={() => { localStorage.setItem('chat', 'initiated') }}>Chat</Link>
             </li>
+
 
             <li className='menu-item'>
               <Link to='/about'>About</Link>
@@ -85,8 +159,9 @@ const Navbar = ({
               <Link to='/profile'>{user && user.fname}</Link>
             </li>
           </React.Fragment>
+
         )}
-    </React.Fragment>
+    </React.Fragment >
   );
 
   return (
