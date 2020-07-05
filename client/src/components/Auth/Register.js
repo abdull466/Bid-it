@@ -118,6 +118,8 @@ const Register = (props) => {
               (authRes) => {
                 const userObj = {
                   email: authRes.user.email,
+                  fname: fname + " " + lname,
+                  dp: url,
                   friends: [],
                   messages: [],
                 };
