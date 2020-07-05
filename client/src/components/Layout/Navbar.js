@@ -71,7 +71,7 @@ const Navbar = ({
 }) => {
   var msg = 'NO'
   window.addEventListener("storage", () => {
-    alert('chng')
+   // alert('chng')
     if (localStorage.getItem('nwm') === true) {
       msg = 'YES'
     }

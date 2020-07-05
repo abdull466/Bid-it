@@ -112,6 +112,9 @@ const Profile = (props) => {
           console.log("this:" + url)
 
           data.image = url;
+          await firebase.firestore().collection("users").doc(localStorage.getItem('currUser')).update({
+            "dp": url
+          })
 
           updateProfile(data);
           swal(" Update Success!", "Your Profile has been updated Successfully", "success");
@@ -148,6 +151,22 @@ const Profile = (props) => {
       });
     }
     else {
+      if (fname === '' && lname !== '') {
+        await firebase.firestore().collection("users").doc(localStorage.getItem('currUser')).update({
+          "fname": profile.fname + " " + lname
+        })
+      }
+      else if (lname === '' && fname !== '') {
+        await firebase.firestore().collection("users").doc(localStorage.getItem('currUser')).update({
+          "fname": fname + " " + profile.lname
+        })
+      }
+      else if (lname !== '' && fname !== '') {
+        await firebase.firestore().collection("users").doc(localStorage.getItem('currUser')).update({
+          "fname": fname + " " + lname
+        })
+      }
+     
       updateProfile(data);
       swal(" Update Success!", "Your Profile has been updated Successfully", "success");
     }
