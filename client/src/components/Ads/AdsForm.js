@@ -17,7 +17,7 @@ const AdsForm = ({ addAd, current, editAd, catagories }) => {
     end: "",
     minbid: "",
     category: "",
-    image: "",
+    image: [],
   });
 
   const [file, setFile] = useState("");
@@ -47,22 +47,19 @@ const AdsForm = ({ addAd, current, editAd, catagories }) => {
     });
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     var lst = []
     var obj = document.getElementById('customFile').files
-
-    Object.keys(obj).forEach(function (key) {
-
-
+    Object.keys(obj).forEach(async (key) => {
       var fileName = timestamp + obj[key].name;
       var storageRef = firebase.storage().ref(fileName);
       // link = "ddddd";
-      storageRef.put(obj[key]).then(function (snapshot) {
+      await storageRef.put(obj[key]).then(async (snapshot) => {
         //  alert("img upload")
         console.log('Image Successfully Uploaded...!');
         const ref = firebase.storage().ref(fileName);
-        var res = ref.getDownloadURL().then(async function (url) {
+        var res = await ref.getDownloadURL().then((url) => {
           console.log("this:" + url)
           lst.push(url)
           //return url;
@@ -73,29 +70,22 @@ const AdsForm = ({ addAd, current, editAd, catagories }) => {
       });
     })
 
-
-    //  console.log(lst)
-
     if (current === null) {
-      setTimeout(function () {
+      setTimeout(() => {
         ad.image = lst
         current === null ? addAd(ad) : editAd(ad, current._id);
-      }, 5000);
-
-      //     nimage = timestamp + image
-
+      }, 8000)
+      setAd({
+        title: "",
+        description: "",
+        address: "",
+        start: "",
+        end: "",
+        minbid: "",
+        image: '', category: ""
+      });
     }
-
-    setAd({
-      title: "",
-      description: "",
-      address: "",
-      start: "",
-      end: "",
-      minbid: "",
-      image: '', category: ""
-    });
-  };
+  }
 
   useEffect(() => {
     if (current !== null) {

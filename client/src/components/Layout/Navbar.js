@@ -27,32 +27,33 @@ firebase.initializeApp({
 window.setInterval(function () {
   // document.getElementById('for_nwm').innerText = "Chat"
   var currUsr = localStorage.getItem('currUser')
-  if(currUsr !== null)
-  {
-  localStorage.setItem('nwm', false)
+  if (currUsr !== null) {
+    localStorage.setItem('nwm', false)
 
-  firebase
-    .firestore().collection("chats").get().then((chat) => {
-      chat.forEach((doc) => {
-        if (doc.id.includes(currUsr)) {
-          console.log(`${doc.id} => ${doc.data().receiverHasRead}`);
-          if (doc.data().receiverHasRead === false && !(doc.data().messages[doc.data().messages.length - 1].sender === currUsr)) {
-            //alert('You have new Message')
-            localStorage.setItem('nwm', true)
-            document.getElementById('new_msg').style.display = ''
-            document.getElementById('no_msg').style.display = 'none'
+    firebase
+      .firestore().collection("chats").get().then((chat) => {
+        chat.forEach((doc) => {
+          if (doc.id.includes(currUsr)) {
+            //     console.log(`${doc.id} => ${doc.data().receiverHasRead}`);
+            if (doc.data().receiverHasRead === false && !(doc.data().messages[doc.data().messages.length - 1].sender === currUsr)) {
+              //alert('You have new Message')
+              localStorage.setItem('nwm', true)
+              document.getElementById('new_msg').style.display = ''
+              document.getElementById('no_msg').style.display = 'none'
+            }
           }
-        }
-        // console.log(`${doc.id.includes('saqlainch92786@gmail.com')} => ${doc.data().receiverHasRead}`);
+          // console.log(`${doc.id.includes('saqlainch92786@gmail.com')} => ${doc.data().receiverHasRead}`);
+        });
       });
-    });
-  setTimeout(function () {
-    if (localStorage.getItem('nwm') === "false") {
-      document.getElementById('new_msg').style.display = 'none'
-      document.getElementById('no_msg').style.display = ''
-    }
-  }, 1300)
-}
+    setTimeout(function () {
+      if (localStorage.getItem('admin' === false)) {
+        if (localStorage.getItem('nwm') === "false") {
+          document.getElementById('new_msg').style.display = 'none'
+          document.getElementById('no_msg').style.display = ''
+        }
+      }
+    }, 1300)
+  }
 }, 2200)
 
 
@@ -71,7 +72,7 @@ const Navbar = ({
 }) => {
   var msg = 'NO'
   window.addEventListener("storage", () => {
-   // alert('chng')
+    // alert('chng')
     if (localStorage.getItem('nwm') === true) {
       msg = 'YES'
     }

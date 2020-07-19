@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import breadcump from '../../images/banner/breadcump-img.png';
-
 import ReactStars from 'react-stars';
 import Divider from '@material-ui/core/Divider';
 import { Container, Row, Col, Carousel, CarouselItem } from 'react-bootstrap'
@@ -22,6 +21,8 @@ import swal from 'sweetalert';
 import visamaster from '../visamaster.JPG'
 import * as RBS from 'react-bootstrap'
 import $ from 'jquery'
+import '../pages/chatStyle.css'
+import MessageIcon from '@material-ui/icons/Message';
 var rupee = ""
 var title = ""
 var desc = "Description Here"
@@ -33,6 +34,9 @@ var paymentId = ""
 var ad_price = ""
 var aditionalFeedback = false;
 const ApproveBids = (props) => {
+  var chat_opened = false;
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const toggle = () => setPopoverOpen(!popoverOpen);
   const {
     getApprovedAdsofLoginUser,
     bids,
@@ -160,20 +164,29 @@ const ApproveBids = (props) => {
   };
 
   const { accountid, account } = payment;
-
+  var chatUrl = 'https://www.google.com.pk'
   function chatTo(id) {
+
+    document.getElementById('chatCircle').style.display = 'block'
+    var a = localStorage.getItem('currUser')
+    var b = localStorage.getItem('pass')
+
     const filter = { userId: id };
     const url = '/api/users/userInfo';
     axios
       .post(url, filter)
       .then((res) => {
+        document.getElementById('myForm').style.display = "block"
         const email = res.data.email;
-
-        window.open(
-          'https://webbiding-chatapp.firebaseapp.com/dashboard/' + email,
-          '_blank'
-        );
-
+        if (localStorage.getItem('chat') === "initiated") {
+          document.getElementById('chatFrame').src = "https://webbiding-chatapp.firebaseapp.com/dashboard/" + email
+        }
+        else {
+          document.getElementById('chatFrame').src = "https://webbiding-chatapp.firebaseapp.com/login/" + a + "/" + b
+          setTimeout(() => {
+            document.getElementById('chatFrame').src = "https://webbiding-chatapp.firebaseapp.com/dashboard/" + email
+          }, 5000)
+        }
         if (res === false) {
         }
       })
@@ -181,6 +194,16 @@ const ApproveBids = (props) => {
         console.log('error', error);
       });
   }
+
+
+  function openForm() {
+    document.getElementById("myForm").style.display = "block";
+  }
+
+  function closeForm() {
+
+  }
+
 
   function onPaymentClick(pkr, name, description, id) {
     rupee = pkr
@@ -220,6 +243,7 @@ const ApproveBids = (props) => {
       document.getElementById('numError').innerText = "Should be Valid Number"
     }
   }
+
 
   function onEasyPaisaPayment(id) {
     var tel = document.getElementById('phoneNumber2').value;
@@ -436,7 +460,6 @@ const ApproveBids = (props) => {
   // });
   return (
     <React.Fragment>
-
       <div className='rt-breadcump rt-breadcump-height breaducump-style-2'>
         <div
           className='rt-page-bg rtbgprefix-full'
@@ -1097,6 +1120,41 @@ const ApproveBids = (props) => {
         </div>
         {/* ./ copntainer */}
       </section>
+      <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+
+      <button id = "chatCircle" style={{ borderRadius: '100px', width: '45px', marginBottom: '55px', height: '45px',display:'none' }} class="open-button" onClick={() => { 
+         chat_opened = !chat_opened
+         document.getElementById('myForm').hidden = chat_opened
+     }}>
+        <MessageIcon style={{ color: 'white', fontSize: '20px',marginLeft:'-6px',marginBottom:'20px' }} />
+      </button>
+      {/* <IconButton aria-label="delete" className={classes.margin}>
+          <DeleteIcon fontSize="large" />
+        </IconButton> */}
+      <div class="chat-popup" id="myForm">
+        <div class="form-container">
+          <p style={{ cursor: 'pointer', textAlign: 'right' }} onClick={() => { chat_opened = false
+                                                                                document.getElementById('chatCircle').style.display = 'none'
+                                                                                document.getElementById('myForm').style.display = "none" 
+                                                                                }}>
+          x
+          
+          </p>
+
+          < iframe
+            id="chatFrame"
+            width="355px"
+            height="400px"
+            src={chatUrl}
+            frameBorder="0"
+            allow="autoplay; encrypted-media"
+            allowFullScreen="false"
+            className="video__iframe"
+          />
+
+        </div>
+      </div>
+
       <nav aria-label='Page navigation example' id="pagNav">
         <ul class='pagination justify-content-center'>
           {bids.length > 0 ? <li class={tabIndex === 1 ? 'page-item disabled' : 'page-item'}>
@@ -1120,6 +1178,7 @@ const ApproveBids = (props) => {
           </li> : ''}
         </ul>
       </nav>
+
     </React.Fragment >
   );
 };
