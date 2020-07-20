@@ -54,7 +54,7 @@ window.setInterval(function () {
       }
     }, 1300)
   }
-}, 2200)
+}, 6000)
 
 
 // const useStyles = makeStyles((theme) => ({
