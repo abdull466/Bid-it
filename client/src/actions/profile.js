@@ -7,6 +7,7 @@ import {
   PROFILE_ERROR,
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
+  GET_PROFILE_BY_ID
 } from './types';
 
 // Get current user profile
@@ -47,11 +48,11 @@ export const getProfiles = () => async dispatch => {
 // Get Profile By ID
 export const getProfileById = userId => async dispatch => {
   try {
-    console.log(userId)
-    const res = await axios.get(`/api/users/profile/${userId}`);
+    console.log("Profile by ID")
+    const res = await axios.post('/api/users/profileById', { params: { id: userId } });
 
     dispatch({
-      type: GET_PROFILE,
+      type: GET_PROFILE_BY_ID,
       payload: res.data
     });
   } catch (err) {

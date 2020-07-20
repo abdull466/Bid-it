@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import axios from 'axios';
 import { getCurrentAd, addBid } from "../../actions/adactions";
 
 import { getProfileById } from '../../actions/profile'
@@ -11,17 +12,35 @@ import Alert from "../Layout/Alert";
 import setAuthToken from "../../utils/setAuthToken";
 
 const ProfileUser = (props) => {
+
+
+
   const { match, getProfileById, profile } = props;
 
   useEffect(() => {
     setAuthToken(localStorage.token);
-    getProfileById(match.params.id);
   }, [match.params.id]);
 
   if (!localStorage.token) {
     window.location.href = "/";
   }
 
+  axios
+    .post("/api/users/profileById/", { params: props.match.params.id })
+    .then(response => {
+      localStorage.setItem('fname', response.data.fname)
+      localStorage.setItem('lname', response.data.lname)
+      localStorage.setItem('email', response.data.email)
+      localStorage.setItem('city', response.data.city)
+      localStorage.setItem('country', response.data.country)
+      localStorage.setItem('dp', response.data.image)
+    }).catch(error => {
+      console.log("error", error);
+    });
+
+
+
+  //alert(profile.id)
   // const submitBid = (e) => {
   //   e.preventDefault();
 
@@ -64,43 +83,40 @@ const ProfileUser = (props) => {
       </div>
 
       <div className="container">
-        {!!profile ? <div className='row'>
+        <div className='row'>
           <div className="col-sm ">
             <div>
-              <img src={`/uploads/${profile.image}`} alt="image" />
+              <img src={localStorage.getItem('dp')} alt="image" />
             </div>
           </div>
           <div className="col-sm h4">
             <table>
               <tr>
                 <td>First Name:</td>
-                <td>{profile.fname}</td>
+                <td>{localStorage.getItem('fname')}</td>
               </tr>
               <tr>
                 <td>Last Name:</td>
-                <td>{profile.lname}</td>
+                <td>{localStorage.getItem('lname')}</td>
               </tr>
               <tr>
                 <td>Email:</td>
-                <td>{profile.email}</td>
+                <td>{localStorage.getItem('email')}</td>
               </tr>
               <tr>
                 <td>Country:</td>
-                <td>{profile.country}</td>
+                <td>{localStorage.getItem('country')}</td>
               </tr>
               <tr>
                 <td>City:</td>
-                <td>{profile.city}</td>
+                <td>{localStorage.getItem('city')}</td>
               </tr>
             </table>
           </div>
-        </div> : <h3>Loading...</h3>}
+        </div>
       </div>
     </React.Fragment>
   );
 };
 
-const mapper = (state) => ({
-  profile: state.profile.profile
-});
-export default connect(mapper, { getProfileById })(ProfileUser);
+export default (ProfileUser);

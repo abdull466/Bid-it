@@ -60,21 +60,21 @@ const Users = (props) => {
     return <p>{i}</p>;
   }
 
-  function fetchProfile(id) {
-    const filter = { userId: id };
-    const url = '/api/users/userInfo';
-    axios
-      .post(url, filter)
-      .then((response) => {
-        const res = response.data.user.mobile;
-        alert(res);
-        if (res === false) {
-        }
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-  }
+  // function fetchProfile(id) {
+  //   const filter = { userId: id };
+  //   const url = '/api/users/userInfo';
+  //   axios
+  //     .post(url, filter)
+  //     .then((response) => {
+  //       const res = response.data.user.mobile;
+  //       alert(res);
+  //       if (res === false) {
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log('error', error);
+  //     });
+  // }
 
   const changePreviousPage = async e => {
     e.preventDefault()

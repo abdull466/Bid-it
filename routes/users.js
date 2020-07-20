@@ -106,6 +106,20 @@ router.get('/profile/', auth, async (req, res) => {
   }
 });
 
+router.post('/profileById/', auth, async (req, res) => {
+  try {
+    console.log("HELLO : " + req.body.params)
+    const profile = await User.findById(req.body.params);
+    if (!profile) {
+      return res.status(400).json({ msg: 'There is no profile for this user' });
+    }
+    console.log(profile.fname)
+    res.json(profile);
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+
 router.get('/myWallet/', auth, async (req, res) => {
   try {
     const profile = await User.findById(req.user.id);
